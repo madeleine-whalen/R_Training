@@ -1,0 +1,93 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+## ---
+
+title: "R_Training"
+
+format: html
+
+editor: visual
+
+---
+
+\## Packages
+
+\`\`\`{r}
+
+library(readr)
+
+library(dplyr)
+
+library(ggplot2)
+
+library(lubridate)
+
+\`\`\`
+
+\## Data Import
+
+\`\`\`{r}
+
+claims \<- read_csv("csv/claims.csv")
+
+View(claims)
+
+\`\`\`
+
+\## Data Cleaning
+
+\`\`\`{r}
+
+monthly_summary \<- claims %\>%
+
+group_by(month = floor_date(service_date, "month")) %\>%
+
+summarise(
+
+num_claims = n(id),
+
+num_patients = n_distinct(patient_id)
+
+) %\>%
+
+\`\`\`
+
+\## Data Vizualization
+
+\`\`\`{r}
+
+ggplot(monthly_summary, aes(x = month)) +
+
+geom_line(aes(y = num_claims, color = "Number of Claims")) +
+
+geom_line(aes(y = num_patients, color = "Number of Patients")) +
+
+labs(
+
+title = "Monthly Claims and Patients",
+
+x = "Month",
+
+y = "Count",
+
+color = "Legend"
+
+) +
+
+scale_x_date(date_labels = "%Y-%m", date_breaks = "1 month") +
+
+theme_minimal() +
+
+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+\`\`\`
+
+\## Data Analysis
+
+\`\`\`{r}
+
+\`\`\`
